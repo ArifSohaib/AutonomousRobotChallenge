@@ -23,7 +23,8 @@ class MotorControls:
             for i in range(-1,2):
                 self.myServo1.value = i 
                 self.myServo2.value = i
-
+                sleep(1)
+                
     def backward(self):
         if self.myServo1 == None:
             self.__initServo()
