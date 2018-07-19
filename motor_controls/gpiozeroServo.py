@@ -20,14 +20,14 @@ class MotorControls:
 
 
     def backward(self):
-        self.myServo1.max()
-        self.myServo2.max()
-        sleep(1)
+        self.myServo1.min()
+        self.myServo2.min()
+        sleep(0.5)
 
     def turn1(self):
         self.myServo1.max()
         self.myServo2.max()
-        sleep(1)
+        sleep(0.5)
 
 
 if __name__ == "__main__":
