@@ -11,7 +11,7 @@ minPW = (1.0-correction)/1000
 myServo1 = Servo(myGPIO, min_pulse_width=minPW, max_pulse_width=maxPW)
 myServo2 = Servo(myGPIO2, min_pulse_width=minPW, max_pulse_width=maxPW)
 
-def forward(myServo1, myServo2):
+def forward(myServo1=myServo1, myServo2=myServo2):
     myServo1.min()
     myServo2.max()
     sleep(0.5)
@@ -20,7 +20,7 @@ def forward(myServo1, myServo2):
     sleep(0.5)
 
 
-def backward(myServo1, myServo2):
+def backward(myServo1=myServo1, myServo2=myServo2):
     myServo1.max()
     myServo2.max()
     sleep(1)
