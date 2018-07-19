@@ -16,7 +16,10 @@ def detect(win):
            
            win.addstr(str(key)) 
            if str(key) == "KEY_UP":
-               gpiozeroServo.forward(gpiozeroServo.myServo1, gpiozeroServo.myServo2)
+               gpiozeroServo.forward()
+           if str(key) == "KEY_DOWN":
+               gpiozeroServo.backward()
+               
            if key == os.linesep:
               break           
         except Exception as e:
