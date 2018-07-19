@@ -2,7 +2,7 @@ from gpiozero import Servo
 from time import sleep
 
 class MotorControls:
-    def __init__(self, pin1=18, pin2=23, correction=0.45):
+    def __init__(self, pin1=18, pin2=19, correction=0.45):
         self.myGPIO1 = pin1
         self.myGPIO2 = pin2
         self.correction = correction
