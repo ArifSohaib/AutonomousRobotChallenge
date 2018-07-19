@@ -13,20 +13,27 @@ class MotorControls:
         self.myServo2 = Servo(self.myGPIO2, min_pulse_width=self.minPW, max_pulse_width=self.maxPW)
 
     def forward(self):
+        print("forward called")
         self.myServo1.min()
         self.myServo2.max()
         sleep(0.5)
 
-
-
     def backward(self):
+        print("backward called")
         self.myServo1.min()
         self.myServo2.min()
         sleep(0.5)
 
     def turn1(self):
+        print("turn1 called")
         self.myServo1.max()
         self.myServo2.max()
+        sleep(0.5)
+
+    def turn2(self):
+        print("turn2 called")
+        self.myServo1.min()
+        self.myServo2.min()
         sleep(0.5)
 
 
