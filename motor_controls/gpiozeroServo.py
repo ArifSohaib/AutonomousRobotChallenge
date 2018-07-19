@@ -12,7 +12,7 @@ myServo1 = Servo(myGPIO, min_pulse_width=minPW, max_pulse_width=maxPW)
 myServo2 = Servo(myGPIO2, min_pulse_width=minPW, max_pulse_width=maxPW)
 
 def forward(myServo1=myServo1, myServo2=myServo2):
-    myServo1.mid()
+    myServo1.min()
     myServo2.max()
     sleep(0.5)
 
