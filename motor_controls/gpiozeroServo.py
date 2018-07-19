@@ -3,10 +3,13 @@ from time import sleep
 
 
 def forward(myServo1, myServo2):
-    while True:
-        myServo1.min()
-        myServo2.max()
-        sleep(0.5)
+    myServo1.min()
+    myServo2.max()
+    sleep(0.5)
+    myServo1.max()
+    myServo2.min()
+    sleep(0.5)
+
 
 def backward(myServo1, myServo2):
     myServo1.max()
