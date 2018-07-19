@@ -8,6 +8,8 @@ class MotorControls:
         self.correction = correction
         self.maxPW = (2.0+correction)/1000
         self.minPW = (1.0-correction)/1000
+        self.myServo1 = None
+        self.myServo2 = None
 
     def __initServo(self):
         self.myServo1 = Servo(self.myGPIO1, min_pulse_width=self.minPW, max_pulse_width=self.maxPW)
