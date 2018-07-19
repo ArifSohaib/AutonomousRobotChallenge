@@ -1,4 +1,4 @@
-import gpiozeroServo
+from gpiozeroServo import MotorControls
 
 import curses
 import os
@@ -8,6 +8,7 @@ def detect(win):
     key=""
     win.clear()                
     win.addstr("Detected key:")
+    motor = MotorControls()
     while 1:          
         try:                 
            key = win.getkey()         
@@ -16,10 +17,10 @@ def detect(win):
            
            win.addstr(str(key)) 
            if str(key) == "KEY_UP":
-               gpiozeroServo.forward()
+               motor.forward()
            if str(key) == "KEY_DOWN":
-               gpiozeroServo.backward()
-               
+               motor.backward()
+
            if key == os.linesep:
               break           
         except Exception as e:
