@@ -22,7 +22,7 @@ class MotorControls:
             print("forward called")
             for i in range(-1,2):
                 self.myServo1.value = i 
-                self.myServo2.value = i*-1
+                self.myServo2.value = i
 
     def backward(self):
         if self.myServo1 == None:
