@@ -3,8 +3,6 @@ import gpiozeroServo
 import curses
 import os
 
-
-
 def detect(win):
     win.nodelay(True)
     key=""
@@ -18,7 +16,7 @@ def detect(win):
            
            win.addstr(str(key)) 
            if str(key) == "KEY_UP":
-               gpiozeroServo.forward()
+               gpiozeroServo.forward(gpiozeroServo.myServo1, gpiozeroServo.myServo2)
            if key == os.linesep:
               break           
         except Exception as e:
