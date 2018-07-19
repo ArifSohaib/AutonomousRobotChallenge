@@ -20,12 +20,9 @@ class MotorControls:
             self.__initServo()
         else:
             print("forward called")
-            self.myServo1.min()
-            self.myServo2.max()
-            sleep(0.5)
-            self.myServo2.min()
-            self.myServo1.max()
-            sleep(0.5)
+            for i in range(-1,2):
+                self.myServo1.value = i 
+                self.myServo2.value = i*-1
 
     def backward(self):
         if self.myServo1 == None:
