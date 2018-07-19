@@ -15,7 +15,10 @@ def detect(win):
            key = win.getkey()         
            win.clear()                
            win.addstr("Detected key:")
+           
            win.addstr(str(key)) 
+           if str(key) == "KEY_UP:
+               gpiozeroServo.forward()
            if key == os.linesep:
               break           
         except Exception as e:
