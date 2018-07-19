@@ -16,35 +16,38 @@ class MotorControls:
     def forward(self):
         if self.myServo1 == None:
             self.__initServo()
-        print("forward called")
-        self.myServo1.min()
-        self.myServo2.max()
-        sleep(0.5)
+        else:
+            print("forward called")
+            self.myServo1.min()
+            self.myServo2.max()
+            sleep(0.5)
 
     def backward(self):
         if self.myServo1 == None:
             self.__initServo()
-        print("backward called")
-        self.myServo1.min()
-        self.myServo2.min()
-        
-        sleep(0.5)
+        else:
+            print("backward called")
+            self.myServo1.min()
+            self.myServo2.min()
+            sleep(0.5)
 
     def turn1(self):
         if self.myServo1 == None:
             self.__initServo()
-        print("turn1 called")
-        self.myServo1.max()
-        self.myServo2.max()
-        sleep(0.5)
+        else:
+            print("turn1 called")
+            self.myServo1.max()
+            self.myServo2.max()
+            sleep(0.5)
 
     def turn2(self):
         if self.myServo1 == None:
             self.__initServo()
-        print("turn2 called")
-        self.myServo1.min()
-        self.myServo2.min()
-        sleep(0.5)
+        else:
+            print("turn2 called")
+            self.myServo1.min()
+            self.myServo2.min()
+            sleep(0.5)
 
 
 if __name__ == "__main__":
