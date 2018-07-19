@@ -23,6 +23,9 @@ class MotorControls:
             self.myServo1.min()
             self.myServo2.max()
             sleep(0.5)
+            self.myServo2.min()
+            self.myServo1.max()
+            sleep(0.5)
 
     def backward(self):
         if self.myServo1 == None:
