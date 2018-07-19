@@ -17,7 +17,7 @@ def detect(win):
            win.addstr("Detected key:")
            
            win.addstr(str(key)) 
-           if str(key) == "KEY_UP:
+           if str(key) == "KEY_UP":
                gpiozeroServo.forward()
            if key == os.linesep:
               break           
