@@ -37,8 +37,12 @@ class MotorControls:
 
     def stop(self):
         # stop the PWM output  
-        self.motor2.stop()
-        self.motor1.stop()                
+        self.motor2.ChangeDutyCycle(100)
+        self.motor1.ChangeDutyCycle(100)
+
+    def end()
+        self.motor1.stop()
+        self.motor2.stop() 
         GPIO.cleanup()          # when your program exits, tidy up after yourself  
 
 if __name__ == "__main__":
