@@ -16,7 +16,7 @@ try:
         while True:   
             char = screen.getch()
             if char == ord('q'):
-                motor.stop()
+                motor.end()
                 break
             elif char == curses.KEY_UP:
                 motor.forward()
@@ -26,12 +26,9 @@ try:
                 motor.turn1()
             elif char == curses.KEY_LEFT:
                 motor.turn2()
-            # elif char == 10:
-            #     GPIO.output(7,False)
-            #     GPIO.output(11,False)
-            #     GPIO.output(13,False)
-            #     GPIO.output(15,False)
-             
+            else:
+                motor.stop()
+            
 finally:
     #Close down curses properly, inc turn echo back on!
     curses.nocbreak(); screen.keypad(0); curses.echo()
