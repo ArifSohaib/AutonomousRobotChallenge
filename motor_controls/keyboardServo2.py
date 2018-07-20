@@ -26,12 +26,7 @@ try:
                 motor.turn1()
             elif char == curses.KEY_LEFT:
                 motor.turn2()
-            # elif char == 10:
-            #     GPIO.output(7,False)
-            #     GPIO.output(11,False)
-            #     GPIO.output(13,False)
-            #     GPIO.output(15,False)
-             
+            
 finally:
     #Close down curses properly, inc turn echo back on!
     curses.nocbreak(); screen.keypad(0); curses.echo()
