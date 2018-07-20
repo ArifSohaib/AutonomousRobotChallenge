@@ -21,8 +21,8 @@ class MotorControls:
         self.motor2.start(80)
         # duty cycle value can be 0.0 to 100.0%, floats are OK 
     def forward(self):
-        self.motor1.ChangeDutyCycle(90)
-        self.motor2.ChangeDutyCycle(90)
+        self.motor1.ChangeDutyCycle(99)
+        self.motor2.ChangeDutyCycle(99)
     def turn1(self):
         self.motor1.ChangeDutyCycle(50)
         self.motor2.ChangeDutyCycle(90)
