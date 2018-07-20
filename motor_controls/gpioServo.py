@@ -13,16 +13,16 @@ class MotorControls:
                                 # different names for each port   
                                 # e.g. p1, p2, motor, servo1 etc.  
         self.motor2 = GPIO.PWM(pin2, 50)                        
+        self.forwardStart()
 
-
-    def forward(self):
+    def forwardStart(self):
         # start the PWM on 90 percent duty cycle 
-        self.motor1.start(90) 
-        sleep(1)             
-        self.motor2.start(90)
-        sleep(1)
+        self.motor1.start(80) 
+        self.motor2.start(80)
         # duty cycle value can be 0.0 to 100.0%, floats are OK 
-
+    def forward(self):
+        self.motor1.ChangeDutyCycle(90)
+        self.motor2.ChangeDutyCycle(90)
     def turn1(self):
         self.motor1.ChangeDutyCycle(50)
         self.motor2.ChangeDutyCycle(90)
