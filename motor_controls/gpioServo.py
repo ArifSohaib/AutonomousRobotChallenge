@@ -40,7 +40,7 @@ class MotorControls:
         self.motor2.ChangeDutyCycle(100)
         self.motor1.ChangeDutyCycle(100)
 
-    def end()
+    def end(self):
         self.motor1.stop()
         self.motor2.stop() 
         GPIO.cleanup()          # when your program exits, tidy up after yourself  
