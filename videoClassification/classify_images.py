@@ -1,6 +1,7 @@
 #heavily modified from https://blog.coast.ai/continuous-online-video-classification-with-tensorflow-inception-and-a-raspberry-pi-785c8b1e13e1
 import tensorflow as tf
 import time 
+import cv2 
 
 class ClassifyImages:
     def __init__(self, model_path, label_path, model_name):
@@ -90,3 +91,39 @@ class ClassifyImages:
                 print("{} {.2f}%".format(predicted_label, max_value*100))
                 #reset the buffer so we are ready for the next one
                 rawCapture.truncate(0)
+
+    def predict_on_usb_video(self, height=640, width=480, fps=24):
+        """
+        get continous classification on USB camera or built-in webcam
+        """
+        cap = cv2.VideoCapture(0)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        cap.set(cv2.CAP_PROP_FPS,fps)
+        #read graph from file
+        with tf.gfile.FastGFile(self.model_path, 'rb') as f:
+            graph_def = tf.GraphDef()
+            graph_def.ParseFromString(f.read())
+            _ = tf.import_graph_def(graph_def, name=self.model_name)
+        with tf.Session() as sess:
+            softmax_tensor = sess.graph.get_tensor_by_name("final_result:0")
+            while True:
+                ok, image = cap.read()
+                #get numpy version of the image
+                decoded_image = image.array
+                #make the prediction
+                predictions = sess.run(softmax_tensor, {"DecodeJpeg:0":decoded_image})
+                prediction = predictions[0]
+                #get the highest confidence category
+                prediction = prediction.tolist()
+                max_value = max(prediction)
+                max_index = prediction.index(max_value)
+                predicted_label = self.labels[max_index]
+                pred_text = "{} {.2f}%".format(predicted_label, max_value*100)
+                cv2.putText(image,pred_text, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv.LINE_AA)
+                cv2.imshow('output',image)
+                
+                if cv2.waitKey(1) & 0xff == ord('q'):
+                    cap.release()
+                    cv2.destroyAllWindows()
+                    break
