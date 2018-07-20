@@ -26,6 +26,8 @@ try:
                 motor.turn1()
             elif char == curses.KEY_LEFT:
                 motor.turn2()
+            else:
+                motor.stop()
             
 finally:
     #Close down curses properly, inc turn echo back on!
