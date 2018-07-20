@@ -16,7 +16,7 @@ try:
         while True:   
             char = screen.getch()
             if char == ord('q'):
-                motor.stop()
+                motor.end()
                 break
             elif char == curses.KEY_UP:
                 motor.forward()
