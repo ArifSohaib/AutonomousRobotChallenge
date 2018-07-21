@@ -100,6 +100,15 @@ class ClassifyImages:
                 print("{} {}%".format(predicted_label, max_value*100))
                 #reset the buffer so we are ready for the next one
                 rawCapture.truncate(0)
+                pred_text = "{} {}%".format(predicted_label, max_value*100)
+                image = image.array
+                cv2.putText(image,pred_text, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
+                image = cv2.resize(image, (640,480),
+                                   interpolation=cv2.INTER_CUBIC)
+                cv2.imshow('output',image)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
+                    break
 
     def predict_on_usb_video(self, height=224, width=224, fps=24):
         """
@@ -134,7 +143,7 @@ class ClassifyImages:
                 max_index = prediction.index(max_value)
                 predicted_label = self.labels[max_index]
                 pred_text = "{} {}%".format(predicted_label, max_value*100)
-                cv2.putText(image,pred_text, (10,100), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
+                cv2.putText(image,pred_text, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2,cv2.LINE_AA)
                 image = cv2.resize(image, (640,480),
                                    interpolation=cv2.INTER_CUBIC)
                 cv2.imshow('output',image)
