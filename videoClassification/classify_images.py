@@ -4,6 +4,8 @@ import time
 import cv2 
 import numpy as np 
 
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 
 class ClassifyImages:
     def __init__(self, model_path, label_path, model_name=''):
@@ -119,11 +121,6 @@ class ClassifyImages:
                     break
                 #get numpy version of the image
                 image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_CUBIC)
-                # print(type(image))
-                # if len(decoded_image) % 10 == 0:
-                #     decoded_image.append(image)
-                # else:
-                #     decoded_image = []
                 decoded_image = np.reshape(image,(1,224,224,3))
                 #make the prediction
                 predictions = sess.run(softmax_tensor, {"input:0":decoded_image})
