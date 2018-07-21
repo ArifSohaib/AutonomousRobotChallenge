@@ -69,9 +69,9 @@ class ClassifyImages:
         get continous classification on Raspberry Pi Camera(NOT USB camera)
         """
         camera = PiCamera()
-        camera.resolution = (320,240)
+        camera.resolution = (224,224)
         camera.framerate = 10
-        rawCapture = PiRGBArray(camera, size=(320,240))
+        rawCapture = PiRGBArray(camera, size=(224,224))
 
         #warmup?
         time.sleep(2)
@@ -82,11 +82,14 @@ class ClassifyImages:
             _ = tf.import_graph_def(graph_def, name=self.model_name)
         with tf.Session() as sess:
             softmax_tensor = sess.graph.get_tensor_by_name("final_result:0")
-            for i, image in enumerate(camera.capture_continous(rawCapture, format='bgr', use_video_port=True)):
+            for i, image in enumerate(camera.capture_continuous(rawCapture, format='bgr', use_video_port=True)):
                 #get numpy version of the image
                 decoded_image = image.array
+                #decoded_image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_CUBIC)
+
+                decoded_image = np.reshape(decoded_image, (1,224,224,3))
                 #make the prediction
-                predictions = sess.run(softmax_tensor, {"DecodeJpeg:0":decoded_image})
+                predictions = sess.run(softmax_tensor, {"input:0":decoded_image})
                 prediction = predictions[0]
                 #get the highest confidence category
                 prediction = prediction.tolist()
@@ -94,7 +97,7 @@ class ClassifyImages:
                 max_index = prediction.index(max_value)
                 predicted_label = self.labels[max_index]
 
-                print("{} {.2f}%".format(predicted_label, max_value*100))
+                print("{} {}%".format(predicted_label, max_value*100))
                 #reset the buffer so we are ready for the next one
                 rawCapture.truncate(0)
 
