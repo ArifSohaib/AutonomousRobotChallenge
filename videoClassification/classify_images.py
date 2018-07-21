@@ -96,7 +96,7 @@ class ClassifyImages:
                 max_value = max(prediction)
                 max_index = prediction.index(max_value)
                 predicted_label = self.labels[max_index]
-
+                print(type(decoded_image))
                 print("{} {}%".format(predicted_label, max_value*100))
                 #reset the buffer so we are ready for the next one
                 rawCapture.truncate(0)
