@@ -22,6 +22,6 @@ for x in key_strokes:
         
     elif x == '0,0,0,1':
         print('turning right')
-    time.sleep(0.1)
+    time.sleep(0.05)
     
 motor.end()
