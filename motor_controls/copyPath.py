@@ -11,17 +11,17 @@ for x in key_strokes:
     if x == '1,0,0,0':
         print('moving forward')
         motor.forward()
-        time.sleep(1)
+        
     elif x == '0,1,0,0':
         print('stopping')
         motor.stop()
-        time.sleep(1)
+        
     elif x == '0,0,1,0':
         print('turning left')
         motor.turn1()
-        time.sleep(1)
+        
     elif x == '0,0,0,1':
         print('turning right')
-        motor.turn2()
-        time.sleep(1)
+    time.sleep(0.1)
+    
 motor.end()
