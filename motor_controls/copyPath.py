@@ -15,4 +15,4 @@ for x in key_strokes:
         motor.turn1()
     elif x == '0,0,0,1':
         motor.turn2()
-
+motor.end()
