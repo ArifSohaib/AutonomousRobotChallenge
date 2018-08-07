@@ -12,6 +12,9 @@ curses.noecho()
 curses.cbreak()
 screen.keypad(True)
 
+keyRec = file('key_strokes.txt','w+')
+
+
 try:
         while True:   
             char = screen.getch()
@@ -20,17 +23,21 @@ try:
                 break
             elif char == curses.KEY_UP:
                 motor.forward()
+                keyRec.write('1,0,0,0\n')
             elif char == curses.KEY_DOWN:
                 motor.stop()
+                keyRec.write('0,1,0,0\n')
             elif char == curses.KEY_RIGHT:
                 motor.turn1()
+                keyRec.write('0,0,1,0\n')
             elif char == curses.KEY_LEFT:
                 motor.turn2()
-            else:
-                motor.stop()
+                keyRec.write('0,0,0,1\n')
+           
             
 finally:
     #Close down curses properly, inc turn echo back on!
+    keyRec.close()
     curses.nocbreak(); screen.keypad(0); curses.echo()
     curses.endwin()
     
