@@ -12,7 +12,7 @@ curses.noecho()
 curses.cbreak()
 screen.keypad(True)
 
-keyRec = file('key_strokes.txt','w+')
+keyRec = open('key_strokes.txt','w+')
 
 
 try:
