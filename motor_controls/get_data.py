@@ -49,6 +49,7 @@ try:
             val_dict = {"inp":key, "image":image_np}
             train_data.append(val_dict)
             keyRec.write(key)
+            count += 1
             if count % 500 == 0:
                 np.save("train_data.npy", train_data)
 finally:
