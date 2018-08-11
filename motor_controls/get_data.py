@@ -5,6 +5,8 @@ import time
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import numpy as np
+import cv2
+
 motor = MotorControls()
 camera = PiCamera()
 camera.resolution = (640,480)
@@ -25,6 +27,8 @@ try:
     while True:
         for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
             image_np = np.array(frame.array)
+            print(image_np.shape)
+            image_np = cv2.resize(image_np,(244,244,3),cv2.INTER_AREA)
             rawCapture.truncate(0)
             
             char = screen.getch()
