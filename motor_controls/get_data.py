@@ -22,7 +22,7 @@ screen.keypad(True)
 keyRec = open('key_strokes.txt','w+')
 
 train_data = []
-count = 0
+
 try:
     while True:
         for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -33,6 +33,7 @@ try:
             char = screen.getch()
             key = [1,0,0,0]
             if char == ord('q'):
+                np.save("train_data.npy", train_data)
                 motor.end()
                 keyRec.close()
                 curses.nocbreak(); screen.keypad(0); curses.echo()
@@ -57,8 +58,8 @@ try:
             val_dict = {"input":key, "image":image_np}
             train_data.append(val_dict)
             keyRec.write(str(key)+"\n")
-            count += 1
-            if count % 100 == 0:
+            
+            if len(train_data) % 100 == 0:
                 np.save("train_data.npy", train_data)
 finally:
     #Close down curses properly, inc turn echo back on!
