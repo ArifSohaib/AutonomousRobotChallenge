@@ -51,13 +51,13 @@ try:
             elif char == curses.KEY_LEFT:
                 motor.turn2()
                 key = '0,0,0,1\n'
-            if key != None:
-                val_dict = {"inp":key, "image":image_np}
-                train_data.append(val_dict)
-                keyRec.write(key)
-                count += 1
-                if count % 500 == 0:
-                    np.save("train_data.npy", train_data)
+            
+            val_dict = {"inp":key, "image":image_np}
+            train_data.append(val_dict)
+            keyRec.write(key)
+            count += 1
+            if count % 500 == 0:
+                np.save("train_data.npy", train_data)
 finally:
     #Close down curses properly, inc turn echo back on!
     keyRec.close()
