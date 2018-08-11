@@ -9,9 +9,9 @@ import cv2
 
 motor = MotorControls()
 camera = PiCamera()
-camera.resolution = (640,480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640,480))
+camera.resolution = (224,224)
+camera.framerate = 20
+rawCapture = PiRGBArray(camera, size=(224,224))
 # Get the curses window, turn off echoing of keyboard to screen, turn on
 # instant (no waiting) key response, and use special values for cursor keys
 screen = curses.initscr()
@@ -27,8 +27,7 @@ try:
     while True:
         for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
             image_np = np.array(frame.array)
-            print(image_np.shape)
-            image_np = cv2.resize(image_np,(244,244),interpolation = cv2.INTER_AREA)
+            image_np = cv2.resize(image_np,(244,244))
             rawCapture.truncate(0)
             
             char = screen.getch()
