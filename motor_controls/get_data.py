@@ -31,29 +31,29 @@ try:
             rawCapture.truncate(0)
             
             char = screen.getch()
-            key = "'1,0,0,0\n'"
+            key = [1,0,0,0]
             if char == ord('q'):
                 motor.end()
                 break
             elif char == curses.KEY_UP:
                 motor.forward()
-                key = '1,0,0,0\n'
+                key = [1,0,0,0]
 
             elif char == curses.KEY_DOWN:
                 motor.stop()
-                key = '0,1,0,0\n'
+                key = [0,1,0,0]
                 
             elif char == curses.KEY_RIGHT:
                 motor.turn1()
-                key = '0,0,1,0\n'
+                key = [0,0,1,0]
                 
             elif char == curses.KEY_LEFT:
                 motor.turn2()
-                key = '0,0,0,1\n'
+                key = [0,0,0,1]
             
             val_dict = {"inp":key, "image":image_np}
             train_data.append(val_dict)
-            keyRec.write(key)
+            keyRec.write(str(key)+"\n")
             count += 1
             if count % 500 == 0:
                 np.save("train_data.npy", train_data)
