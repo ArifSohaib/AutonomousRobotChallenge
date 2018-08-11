@@ -28,7 +28,7 @@ try:
         for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
             image_np = np.array(frame.array)
             print(image_np.shape)
-            image_np = cv2.resize(image_np,(244,244,3),interpolation = cv2.INTER_AREA)
+            image_np = cv2.resize(image_np,(244,244),interpolation = cv2.INTER_AREA)
             rawCapture.truncate(0)
             
             char = screen.getch()
@@ -50,12 +50,13 @@ try:
             elif char == curses.KEY_LEFT:
                 motor.turn2()
                 key = '0,0,0,1\n'
-            val_dict = {"inp":key, "image":image_np}
-            train_data.append(val_dict)
-            keyRec.write(key)
-            count += 1
-            if count % 500 == 0:
-                np.save("train_data.npy", train_data)
+            if key != None:
+                val_dict = {"inp":key, "image":image_np}
+                train_data.append(val_dict)
+                keyRec.write(key)
+                count += 1
+                if count % 500 == 0:
+                    np.save("train_data.npy", train_data)
 finally:
     #Close down curses properly, inc turn echo back on!
     keyRec.close()
