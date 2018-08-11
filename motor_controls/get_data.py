@@ -34,6 +34,9 @@ try:
             key = [1,0,0,0]
             if char == ord('q'):
                 motor.end()
+                keyRec.close()
+                curses.nocbreak(); screen.keypad(0); curses.echo()
+                curses.endwin()
                 break
             elif char == curses.KEY_UP:
                 motor.forward()
@@ -51,11 +54,11 @@ try:
                 motor.turn2()
                 key = [0,0,0,1]
             
-            val_dict = {"inp":key, "image":image_np}
+            val_dict = {"input":key, "image":image_np}
             train_data.append(val_dict)
             keyRec.write(str(key)+"\n")
             count += 1
-            if count % 500 == 0:
+            if count % 100 == 0:
                 np.save("train_data.npy", train_data)
 finally:
     #Close down curses properly, inc turn echo back on!
