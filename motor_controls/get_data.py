@@ -32,6 +32,7 @@ try:
             rawCapture.truncate(0)
             
             char = screen.getch()
+            key = "'1,0,0,0\n'"
             if char == ord('q'):
                 motor.end()
                 break
