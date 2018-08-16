@@ -42,7 +42,7 @@ try:
                 key = [0,0,0,0,1]
                 if char == ord('x'):
                     np.save("train_data.npy", train_data)
-                    motor.end()
+                    ser.write(b'5')
                     keyRec.close()
                     curses.nocbreak(); screen.keypad(0); curses.echo()
                     curses.endwin()
@@ -80,7 +80,7 @@ try:
             key = [0,0,0,0,1]
             if char == ord('x'):
                 np.save("train_data.npy", train_data)
-                motor.end()
+                ser.write(b'5')
                 keyRec.close()
                 curses.nocbreak(); screen.keypad(0); curses.echo()
                 curses.endwin()
