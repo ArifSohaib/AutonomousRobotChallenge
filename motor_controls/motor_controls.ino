@@ -53,33 +53,34 @@ void loop()
 { 
   recvInfo();
   moveUsingInput();
-
+  //Test1();
 }
 
 void moveUsingInput(){
   int control = (recievedChar - '0');
-  Serial.println(control);
-  Serial.println(newData);
+  if(newData){
+    Serial.print(control);
+  }
   int dly = 1000;
   while(newData == true){
     
-    if(control == '1'){
+    if(control == 1){
       FORWARD(dly);
       Serial.println("moving forward");
     }
-    else if (control == '2'){
+    else if (control == 2){
       REVERSE(dly);
       Serial.println("moving reverse");
     }
-    else if (control == '3'){
+    else if (control == 3){
       LEFT(dly);
       Serial.println("moving left");
     }
-    else if (control == '4'){
+    else if (control == 4){
       RIGHT(dly);
       Serial.println("moving right");
     }
-    else if(control == '5'){
+    else if(control == 5){
       PAUSE(dly);
       Serial.println("paused");
     }
