@@ -8,7 +8,7 @@ curses.cbreak()
 screen.keypad(True)
 
 keyRec = open('key_strokes.txt','w+')
-ser = serial.Serial()
+ser = serial.Serial("/dev/ttyUSB0", "9600")
 
 try:
         while True:   
