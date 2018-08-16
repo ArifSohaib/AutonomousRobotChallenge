@@ -8,7 +8,7 @@
  * Source: https://www.youtube.com/watch?v=fJvtMszk2G4
  * Date: March 2, 2017
 */
-#include <SoftwareSerial.h>
+
 char c;
 char recievedChar;
 boolean newData = false;
@@ -47,33 +47,44 @@ void setup()
   Serial.begin(9600);
   
 //  mySerial.begin(9600);
-  Serial.println("Testing Bluetooth.  Sync with Android Bluetooth now.");
+  //Serial.println("Testing Bluetooth.  Sync with Android Bluetooth now.");
 }
 void loop()
 { 
   recvInfo();
+  moveUsingInput();
+
 }
 
 void moveUsingInput(){
   int control = (recievedChar - '0');
-  Serial.write(control);
-  int dly = 500;
+  Serial.println(control);
+  Serial.println(newData);
+  int dly = 1000;
   while(newData == true){
     
     if(control == '1'){
       FORWARD(dly);
+      Serial.println("moving forward");
     }
     else if (control == '2'){
       REVERSE(dly);
+      Serial.println("moving reverse");
     }
     else if (control == '3'){
       LEFT(dly);
+      Serial.println("moving left");
     }
     else if (control == '4'){
       RIGHT(dly);
+      Serial.println("moving right");
+    }
+    else if(control == '5'){
+      PAUSE(dly);
+      Serial.println("paused");
     }
     else{
-      PAUSE(dly);
+      Serial.println("unknown input");
     }
     newData = false;
   }
