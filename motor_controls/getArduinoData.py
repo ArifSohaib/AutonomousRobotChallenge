@@ -86,22 +86,22 @@ try:
                 curses.endwin()
                 break
             elif char == ord('w'):
-                ser.write('1')
+                ser.write(b'1')
                 key = [1,0,0,0,0]
 
             elif char == ord('s'):
-                ser.write('2')
+                ser.write(b'2')
                 key = [0,1,0,0,0]
                     
             elif char == ord('a'):
-                ser.write('3')
+                ser.write(b'3')
                 key = [0,0,1,0,0]
                     
             elif char == ord('d'):
-                ser.write('4')
+                ser.write(b'4')
                 key = [0,0,0,1,0]
             elif char == ord('q'):
-                ser.write('5')
+                ser.write(b'5')
                 key = [0,0,0,0,1]
                 
             val_dict = {"input":key, "image":image_np}
