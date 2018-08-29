@@ -1,15 +1,16 @@
 import numpy as np 
-
-data= np.load("train_data.npy", encoding='latin1')
-
+from drive_model import default_linear
+import tensorflow as tf 
 import matplotlib.pyplot as plt 
 import cv2
+
+
+data= np.load("train_data.npy", encoding='latin1')
 
 img = plt.imshow(data[100]["image"][:,:,::-1])
 
 plt.show()
 
-import tensorflow as tf 
 images = []
 labels = []
 for i in range(len(data)):
