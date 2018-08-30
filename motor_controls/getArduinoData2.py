@@ -7,8 +7,8 @@ from picamera import PiCamera
 import cv2
 import numpy as np
 
-ser = serial.Serial("/dev/ttyUSB0", "9600")
-serLidar = serial.Serial("/dev/ttyACM0", "115200")
+ser = serial.Serial("/dev/ttyUSB1", "9600")
+serLidar = serial.Serial("/dev/ttyACM0", "9600")
 cap = cv2.VideoCapture(0)
 piCam = False
 #check if picamera exists
