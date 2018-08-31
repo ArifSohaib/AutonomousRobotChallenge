@@ -73,11 +73,11 @@ void moveUsingInput(){
       Serial.println("moving reverse");
     }
     else if (control == 3){
-      LEFT(dly);
+      CW(900);
       Serial.println("moving left");
     }
     else if (control == 4){
-      RIGHT(dly);
+      CCW(900);
       Serial.println("moving right");
     }
     else if(control == 5){
@@ -106,33 +106,35 @@ void FORWARD(int dly)
 { 
 // lcd.setCursor ( 0, 0 );   lcd.print ("^");      
 ////  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
-  digitalWrite(4,LOW);  digitalWrite(5,HIGH);  analogWrite(6,250);
-  digitalWrite(7,LOW);  digitalWrite(8,HIGH);  analogWrite(9,250);
-  delay(dly); 
+  digitalWrite(4,LOW);  digitalWrite(5,HIGH);  analogWrite(6,125);
+  digitalWrite(7,LOW);  digitalWrite(8,HIGH);  analogWrite(9,125);
+  //delay(dly); 
 }
 void REVERSE(int dly)
 { 
 //  lcd.setCursor ( 0, 0 ); lcd.print ("v");      
 ////  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
-  digitalWrite(4,HIGH);  digitalWrite(5,LOW);  analogWrite(6,250);
-  digitalWrite(7,HIGH);  digitalWrite(8,LOW);  analogWrite(9,250);
-  delay(dly);
+  digitalWrite(4,HIGH);  digitalWrite(5,LOW);  analogWrite(6,125);
+  digitalWrite(7,HIGH);  digitalWrite(8,LOW);  analogWrite(9,125);
+  //delay(dly);
 }
 void LEFT(int dly)
 { // dly =450 for 90-deg
 //  lcd.setCursor ( 0, 0 ); lcd.print ("<");      
 //  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
-  digitalWrite(4,LOW);   digitalWrite(5,HIGH); analogWrite(6,125);
+  digitalWrite(4,LOW);   digitalWrite(5,HIGH); analogWrite(6,250);
   digitalWrite(7,HIGH);  digitalWrite(8,LOW);  analogWrite(9,250);
-  delay(dly); PAUSE(1);
+  delay(dly); 
+  //PAUSE(dly);
 }
 void RIGHT(int dly)
 { // dly = 450 for 90-deg
 //  lcd.setCursor ( 0, 0 ); lcd.print (">");      
 //  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
   digitalWrite(4,HIGH); digitalWrite(5,LOW);   analogWrite(6,250);
-  digitalWrite(7,LOW);  digitalWrite(8,HIGH);  analogWrite(9,125);
-  delay(dly); PAUSE(1);
+  digitalWrite(7,LOW);  digitalWrite(8,HIGH);  analogWrite(9,250);
+  delay(dly); 
+  //PAUSE(dly);
 }
 void PAUSE(int dly)
 { 
@@ -158,3 +160,22 @@ void recvInfo(){
     newData = true;
   }
 }
+ 
+ void CCW(int dly)
+{ // dly =450 for 90-deg
+//  lcd.setCursor ( 0, 0 ); lcd.print ("<");      
+//  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
+  digitalWrite(4,LOW);   digitalWrite(5,HIGH); analogWrite(6,250);
+  digitalWrite(7,HIGH);  digitalWrite(8,LOW);  analogWrite(9,250);
+  delay(dly);//PAUSE(dly);
+}
+void CW(int dly)
+{ // dly = 450 for 90-deg
+//  lcd.setCursor ( 0, 0 ); lcd.print (">");      
+//  lcd.setCursor ( 0, 1 ); lcd.print ("                ");      
+  digitalWrite(4,HIGH); digitalWrite(5,LOW);   analogWrite(6,250);
+  digitalWrite(7,LOW);  digitalWrite(8,HIGH);  analogWrite(9,250);
+  delay(dly);//PAUSE(dly);
+}
+  
+
