@@ -7,8 +7,8 @@ from picamera import PiCamera
 import cv2
 import numpy as np
 
-ser = serial.Serial("/dev/ttyUSB1", "9600")
-serLidar = serial.Serial("/dev/ttyACM0", "9600")
+ser = serial.Serial("/dev/ttyUSB0", "9600")
+serLidar = serial.Serial("/dev/ttyACM0", "115200")
 cap = cv2.VideoCapture(0)
 piCam = False
 #check if picamera exists
@@ -36,7 +36,7 @@ try:
         distString = serLidar.readline()
         dist = 1000
         try:
-            dist = int(distString[:3])
+            dist = int(distString.decode("utf-8"))
         except:
             print("can't convert dist")
         if piCam == True:
