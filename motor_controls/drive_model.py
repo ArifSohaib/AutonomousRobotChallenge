@@ -7,6 +7,34 @@ import tensorflow as tf
 import os
 import numpy as np
 
+def donkey_model():
+    img_in = Input(shape=(224, 224, 3), name='img_in')
+    x = img_in
+
+    # Convolution2D class name is an alias for Conv2D
+    x = Convolution2D(filters=24, kernel_size=(5, 5), strides=(2, 2), activation='relu')(x)
+    x = Convolution2D(filters=32, kernel_size=(5, 5), strides=(2, 2), activation='relu')(x)
+    x = Convolution2D(filters=64, kernel_size=(5, 5), strides=(2, 2), activation='relu')(x)
+    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='relu')(x)
+    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='relu')(x)
+
+    x = Flatten(name='flattened')(x)
+    x = Dense(units=100, activation='linear')(x)
+    x = Dropout(rate=.1)(x)
+    x = Dense(units=50, activation='linear')(x)
+    x = Dropout(rate=.1)(x)
+
+    # continous output of throttle
+    control_out = Dense(units=5, activation='linear', name='control_out')(x)
+
+    model = Model(inputs=[img_in], outputs=[control_out])
+
+    model.compile(optimizer='adam',
+                  loss={'control_out': 'categorical_crossentropy'},
+                  metrics=['acc'])
+
+    return model
+
 def default_linear():
     "fully connected version of the default linear model"
     img_in = Input(shape=(224, 224, 3), name='img_in')
@@ -14,14 +42,13 @@ def default_linear():
 
     # Convolution2D class name is an alias for Conv2D
     x = Convolution2D(filters=64, kernel_size=(5, 5), strides=(2, 2), activation='elu')(x) #output shape 110x110
-    x = MaxPool2D(pool_size=(2,2))(x) #output shape 55x55
-    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 27x27
     
-    x = Convolution2D(filters=32, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 7x7
+    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 27x27
+    x = MaxPool2D(pool_size=(2,2))(x) 
+    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='relu')(x) #output shape 7x7
     x = MaxPool2D(pool_size=(2,2))(x)
-    x = Convolution2D(filters=5, kernel_size=(3,3), strides=(2, 2), activation='elu')(x)
-    x = Flatten(name='flattened')(x)
-    x = Dense(5,activation='relu')(x)
+    x = Convolution2D(filters=5, kernel_size=(3,3), strides=(2, 2), activation='relu')(x)
+    x = MaxPool2D(pool_size=(2,2))(x) #output 5x5
     control_out = Flatten(name='control_out')(x)
     # control_out = Dense(units=4, activation='relu', name='control_out')(x)
 
@@ -30,7 +57,7 @@ def default_linear():
 
     model = Model(inputs=[img_in], outputs=[control_out])
 
-    model.compile(optimizer='sgd',
+    model.compile(optimizer='adam',
                   loss={'control_out': 'categorical_crossentropy'},
                   metrics=['acc'])
 
