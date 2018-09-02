@@ -40,4 +40,6 @@ while True:
                 
             rawCapture.truncate(0)
             result = model.predict([image_np])
-            print(np.argmax(result))        
+            command = (np.argmax(result)+1).astype('U')
+            print(command)
+            ser.write(bytes(command,'utf8'))
