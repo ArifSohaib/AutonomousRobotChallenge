@@ -26,7 +26,7 @@ try:
     print("starting pi camera")
 except:
     print("Pi camera does not exist")
-
+dist = 1000
 while True:
     distString = serLidar.readline().decode("utf-8")
     try:
