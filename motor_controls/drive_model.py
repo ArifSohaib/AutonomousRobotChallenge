@@ -13,15 +13,15 @@ def default_linear():
     x = img_in
 
     # Convolution2D class name is an alias for Conv2D
-    x = Convolution2D(filters=24, kernel_size=(5, 5), strides=(2, 2), activation='elu')(x) #output shape 110x110
-    x = Convolution2D(filters=32, kernel_size=(5, 5), strides=(2, 2), activation='elu')(x) #output shape 53x53
-    x = Convolution2D(filters=64, kernel_size=(5, 5), strides=(2, 2), activation='elu')(x) #output shape 25x25
-    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 12x12
-    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='elu')(x) #output shape 10x10
-    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 5x5
+    x = Convolution2D(filters=64, kernel_size=(5, 5), strides=(2, 2), activation='elu')(x) #output shape 110x110
+    x = MaxPool2D(pool_size=(2,2))(x) #output shape 55x55
+    x = Convolution2D(filters=64, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 27x27
+    
+    x = Convolution2D(filters=32, kernel_size=(3, 3), strides=(2, 2), activation='elu')(x) #output shape 7x7
+    x = MaxPool2D(pool_size=(2,2))(x)
     x = Convolution2D(filters=5, kernel_size=(3,3), strides=(2, 2), activation='elu')(x)
-    # x = Reshape([None, 100])(x)
-    # x = Flatten(name='flattened')(x)
+    x = Flatten(name='flattened')(x)
+    x = Dense(5,activation='relu')(x)
     control_out = Flatten(name='control_out')(x)
     # control_out = Dense(units=4, activation='relu', name='control_out')(x)
 
@@ -30,8 +30,9 @@ def default_linear():
 
     model = Model(inputs=[img_in], outputs=[control_out])
 
-    model.compile(optimizer='adam',
-                  loss={'control_out': 'categorical_crossentropy'})
+    model.compile(optimizer='sgd',
+                  loss={'control_out': 'categorical_crossentropy'},
+                  metrics=['acc'])
 
     return model
 
@@ -53,11 +54,11 @@ def main():
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
     # Create checkpoint callback
-    cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, 
-                                                 save_weights_only=True,
-                                                 verbose=1)
-    model.fit(images, labels, batch_size=32, epochs=100, callbacks = [cp_callback])
-
+    #cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, 
+    #                                             save_weights_only=True,
+    #                                             verbose=1)
+    model.fit(images, labels, batch_size=20, epochs=500, validation_split=0.2)#, callbacks = [cp_callback])
+    model.save_weights("training_1/model.h5")
     #test model 
     preds = model.predict(images[:10])
     for i in range(len(preds)):
