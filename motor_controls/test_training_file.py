@@ -16,6 +16,7 @@ ser = serial.Serial("/dev/ttyUSB0", "9600")
 serLidar = serial.Serial("/dev/ttyACM0", "115200")
 cap = cv2.VideoCapture(0)
 piCam = False
+distArr = []
 #check if picamera exists
 try:
     camera = PiCamera()
@@ -31,6 +32,9 @@ while True:
     distString = serLidar.readline().decode("utf-8")
     try:
         dist = int(distString.decode("utf-8")[:3])
+        distArr.append(dist)
+        if len(distArr) == 100:
+            distArr = []
     except:
         print("can't convert dist")
     if piCam == True:
@@ -40,7 +44,8 @@ while True:
             result = model.predict([image_np])
             command = (np.argmax(result)+1).astype('U')
             print(command)
-            if dist > 40:
+            dist50 = list(filter(lambda x: x>=50, distArr)
+            if len(dist50) < 10:
                 ser.write(bytes(command,'utf8'))
             else:
                 ser.write(b'5')
