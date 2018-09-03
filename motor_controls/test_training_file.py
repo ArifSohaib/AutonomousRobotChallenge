@@ -46,7 +46,7 @@ while True:
             print(command)
             dist50 = []
             try:
-	        dist50 = list(filter(lambda x: x>=50, distArr)
+                dist50 = list(filter(lambda x: x>=50, distArr))
             except:
                 pass
             if len(dist50) < 10:
