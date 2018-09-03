@@ -44,8 +44,12 @@ while True:
             result = model.predict([image_np])
             command = (np.argmax(result)+1).astype('U')
             print(command)
-            dist50 = list(filter(lambda x: x>=50, distArr)
+            dist50 = []
+            try:
+	        dist50 = list(filter(lambda x: x>=50, distArr)
+            except:
+                pass
             if len(dist50) < 10:
-                ser.write(bytes(command,'utf8'))
+            	ser.write(bytes(command,'utf8'))
             else:
                 ser.write(b'5')
