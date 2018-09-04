@@ -1,6 +1,7 @@
 import multiprocessing
 import numpy as np 
 import random 
+import time
 
 def split_list(lst,workers):
     list_ids = []
@@ -53,9 +54,13 @@ def main():
     NUM_WORKERS = multiprocessing.cpu_count() * 2
     #define a list of random numbers 
     nums = np.random.randint(0,400,360).tolist()
+    start = time.time()
     list_ids = split_list(nums, NUM_WORKERS)
     total = in_parallel_onefunc(perform_check, list_ids, NUM_WORKERS)
+    end = time.time()
+
     print(total)
+    print("calculated in {}".format(end - start))
 if __name__ == "__main__":
     main()
 
