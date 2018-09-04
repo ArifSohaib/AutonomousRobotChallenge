@@ -33,8 +33,10 @@ while True:
     try:
         dist = int(distString.decode("utf-8")[:3])
         distArr.append(dist)
+        #every time the length reaches 100, the first item is deleted
         if len(distArr) == 100:
-            distArr = []
+            del distArr[0]
+
     except:
         print("can't convert dist")
     if piCam == True:
