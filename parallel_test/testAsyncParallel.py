@@ -53,7 +53,7 @@ def main():
     #get number of workers, each core of cpu is multithreaded so total logical number is cpu_count * 2
     NUM_WORKERS = multiprocessing.cpu_count() * 2
     #define a list of random numbers 
-    nums = np.random.randint(0,400,360).tolist()
+    nums = np.random.randint(0,400,10000).tolist()
     start = time.time()
     list_ids = split_list(nums, NUM_WORKERS)
     total = in_parallel_onefunc(perform_check, list_ids, NUM_WORKERS)
