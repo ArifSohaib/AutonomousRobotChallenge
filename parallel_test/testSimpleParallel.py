@@ -36,8 +36,8 @@ def main():
     #define a list of random numbers 
     nums = np.random.randint(0,400,360).tolist()
     list_ids = split_list(nums, NUM_WORKERS)
-    count = 0
-    count += get_count(list_ids,NUM_WORKERS)
-    print("total: {}".format(count))
+    
+    print(get_count(list_ids,NUM_WORKERS))
+    
 if __name__ == "__main__":
     main()
