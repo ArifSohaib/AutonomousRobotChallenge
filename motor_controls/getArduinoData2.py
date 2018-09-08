@@ -47,8 +47,8 @@ try:
                 
                 char = screen.getch()
                 key = [0,0,0,0,1]
-                if char == ord(b'x'):
-                    np.save("train_data_wcc2.npy", train_data)
+                if char == ord('x'):
+                    np.save("train_data.npy", train_data)
                     ser.write(b'5')
                     keyRec.close()
                     curses.nocbreak(); screen.keypad(0); curses.echo()
@@ -66,10 +66,10 @@ try:
                     ser.write(b'3')
                     key = [0,0,1,0,0]
                     
-                elif char == ord(b'd') and dist > 100:
+                elif char == ord('d') and dist > 100:
                     ser.write(b'4')
                     key = [0,0,0,1,0]
-                elif char == ord(b' '):
+                elif char == ord(' '):
                     ser.write(b'5')
                     key = [0,0,0,0,1]
                 
