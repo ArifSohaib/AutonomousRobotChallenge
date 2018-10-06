@@ -42,7 +42,7 @@ try:
                 char = screen.getch()
                 key = [0,0,0,0,1]
                 if char == ord('x'):
-                    np.save("train_data_{}.npy".format(datetime.now()), train_data)
+                    np.save("train_data_{}.npy".format(str(datetime.datetime.now()), train_data)
                     ser.write(b'5')
                     keyRec.close()
                     curses.nocbreak(); screen.keypad(0); curses.echo()
