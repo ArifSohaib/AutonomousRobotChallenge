@@ -61,10 +61,10 @@ void moveUsingInput(){
   if(newData){
     Serial.print(control);
   }
-  int spd = 180;
-  int spdT = 180;
+  int spd = 150;
+  int spdT = 150;
   int dly =15;
-  int dlyP = 0;
+  int dlyP = 30;
   int dlyT = 30;
   while(newData == true){
     
@@ -96,6 +96,16 @@ void moveUsingInput(){
     else if(control == 5){
       PAUSE(spd, dlyP);
       Serial.println("paused");
+    }
+    else if(control == 6){
+      spd += 10;
+      spdT += 10;
+      Serial.println("increasing speed");
+    }
+    else if(control == 7){
+      spd -= 10;
+      spdT -= 10;
+      Serial.println("decreasing speed");
     }
     else{
       Serial.println("unknown input");
