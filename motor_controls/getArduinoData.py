@@ -6,6 +6,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 import cv2
 import numpy as np
+import datetime
 
 ser = serial.Serial("/dev/ttyUSB0", "9600")
 cap = cv2.VideoCapture(0)
@@ -41,7 +42,7 @@ try:
                 char = screen.getch()
                 key = [0,0,0,0,1]
                 if char == ord('x'):
-                    np.save("train_data_wcc2.npy", train_data)
+                    np.save("train_data_{}.npy".format(datetime.now()), train_data)
                     ser.write(b'5')
                     keyRec.close()
                     curses.nocbreak(); screen.keypad(0); curses.echo()
@@ -49,28 +50,37 @@ try:
                     break
                 elif char == ord('w'):
                     ser.write(b'1')
-                    key = [1,0,0,0,0]
+                    key = [1,0,0,0,0,0,0]
 
                 elif char == ord('s'):
                     ser.write(b'2')
-                    key = [0,1,0,0,0]
+                    key = [0,1,0,0,0,0,0]
                     
                 elif char == ord('a'):
                     ser.write(b'3')
-                    key = [0,0,1,0,0]
+                    key = [0,0,1,0,0,0,0]
                     
                 elif char == ord('d'):
                     ser.write(b'4')
-                    key = [0,0,0,1,0]
+                    key = [0,0,0,1,0,0,0]
+
                 elif char == ord(' '):
                     ser.write(b'5')
-                    key = [0,0,0,0,1]
-                
+                    key = [0,0,0,0,1,0,0]
+
+                elif char == ord('q'):
+                    ser.write(b'6')
+                    key = [0,0,0,0,0,1,0]
+
+                elif char == ord('e'):
+                    ser.write(b'7')
+                    key = [0,0,0,0,0,0,1]
+
                 val_dict = {"input":key, "image":image_np}
                 train_data.append(val_dict)
                 keyRec.write(str(key)+"\n")
                 
-                if len(train_data) % 100 == 0:
+                if len(train_data) % 50 == 0:
                     np.save("train_data.npy", train_data)
         #no pi camera, using USB
         else:
