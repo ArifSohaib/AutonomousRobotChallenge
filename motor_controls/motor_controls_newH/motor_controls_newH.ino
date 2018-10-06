@@ -29,6 +29,11 @@ int LEFT_FORWARD = 6;
 int LEFT_REVERSE = 5;
 int RIGHT_FORWARD = 10;
 int RIGHT_REVERSE = 9;
+int spd = 150;
+int spdT = 150;
+int dly =15;
+int dlyP = 30;
+int dlyT = 30;
 
 // Information on L298N and PWM control
 // PWM ranges from 0 to 255. Pins D6 & D9 are used here.  Use analogWrite(6,255) for PWM.
@@ -61,11 +66,7 @@ void moveUsingInput(){
   if(newData){
     Serial.print(control);
   }
-  int spd = 150;
-  int spdT = 150;
-  int dly =15;
-  int dlyP = 30;
-  int dlyT = 30;
+
   while(newData == true){
     
     if(control == 1){
@@ -98,21 +99,23 @@ void moveUsingInput(){
       Serial.println("paused");
     }
     else if(control == 6){
-      spd += 10;
-      spdT += 10;
+      spd = spd + 20;
+      spdT = spdT + 20;
       Serial.println("increasing speed");
+      Serial.println(spd);
     }
     else if(control == 7){
-      spd -= 10;
-      spdT -= 10;
+      spd = spd - 20;
+      spdT = spdT - 20;
       Serial.println("decreasing speed");
+      Serial.println(spd);
     }
     else{
       Serial.println("unknown input");
       PAUSE(spd,dlyP);
     }
     newData = false;
-    PAUSE(spd,dlyP);
+    //PAUSE(spd,dlyP);
   }
 
     
