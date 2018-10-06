@@ -15,28 +15,32 @@ try:
     while True:   
         char = screen.getch()
         if char == ord(' '):
-            ser.write('5')
+            ser.write(b'5')
             #one-hot format ['up', 'down', 'left', 'right','pause','speedup','slowdown']
             key = [0,0,0,0,1,0,0]
+            
         elif char == ord('q'):
-            ser.write('6')
+            ser.write(b'6')
             key = [0,0,0,0,0,1,0]
+
         elif char == ord('e'):
+            ser.write(b'7')
             key = [0,0,0,0,0,0,1]
+
         elif char == ord('w'):
-            ser.write('1')
+            ser.write(b'1')
             key = [1,0,0,0,0,0,0]
 
         elif char == ord('s'):
-            ser.write('2')
+            ser.write(b'2')
             key = [0,1,0,0,0,0,0]
 
         elif char == ord('a'):
-            ser.write('3')
+            ser.write(b'3')
             key = [0,0,1,0,0,0,0]
                 
         elif char == ord('d'):
-            ser.write('4')
+            ser.write(b'4')
             key = [0,0,0,1,0,0,0]
         elif char == ord('x'):
             break
