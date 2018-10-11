@@ -1,3 +1,4 @@
+
 //#include <Wire.h> 
 //#include <Servo.h>
 //#include <LiquidCrystal_I2C.h>
@@ -9,6 +10,7 @@
  * Source: https://www.youtube.com/watch?v=fJvtMszk2G4
  * Date: March 2, 2017
 */
+#include <NewPing.h>
 
 char c;
 char recievedChar;
@@ -22,9 +24,12 @@ boolean newData = false;
 //int Xdir = 0;
 //int Ydir = 0;
 //(ADC pin 14);
-int blue = 2;
-int green = 1;
-int red = 3;
+
+
+int trig_front = 3;
+int echo_front = 2;
+int trig_back = 13;
+int echo_back = 12;
 int LEFT_FORWARD = 6;
 int LEFT_REVERSE = 5;
 int RIGHT_FORWARD = 10;
@@ -34,6 +39,18 @@ int spdT = 150;
 int dly =15;
 int dlyP = 30;
 int dlyT = 30;
+int READ_RF = A1;
+int READ_RR = A2;
+int READ_LF = A4;
+int READ_LR = A5;
+
+NewSonar sonar_front(trigger_front, echo_front, 200);
+
+//define sonar distance variables
+long duration;
+int distance;
+int dist_front;
+int dist_back;
 
 // Information on L298N and PWM control
 // PWM ranges from 0 to 255. Pins D6 & D9 are used here.  Use analogWrite(6,255) for PWM.
@@ -41,13 +58,18 @@ int dlyT = 30;
 void setup()
 { 
   
-  //pinMode(RIGHT_FRONT,OUTPUT); 
-  //pinMode(RIGHT_REAR,OUTPUT); 
+  pinMode(trig_front, OUTPUT);
+  pinMode(trig_back, OUTPUT);
+  pinMode(echo_front, OUTPUT);
+  pinMode(echo_back, OUTPUT);
   pinMode(LEFT_FORWARD,OUTPUT); 
   pinMode(LEFT_REVERSE,OUTPUT); 
   pinMode(RIGHT_FORWARD,OUTPUT);
   pinMode(RIGHT_REVERSE,OUTPUT);
-
+  pinMode(READ_RF, INPUT);
+  pinMode(READ_RR, INPUT);
+  pinMode(READ_LF, INPUT);
+  pinMode(READ_LR, INPUT);
   Serial.begin(9600);
   
 //  mySerial.begin(9600);
@@ -57,9 +79,28 @@ void loop()
 { 
   recvInfo();
   moveUsingInput();
-  //Test1();
+  
+  //PAUSE(spd,0);
 }
 
+int getDist(int trig, int echo){
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  duration = pulseIn(echo, HIGH);
+  distance = duration*0.034/2;
+  return distance;
+}
+
+void readValues(){
+      
+      Serial.println(analogRead(READ_RR));
+      Serial.println(analogRead(READ_RR));
+      Serial.println(analogRead(READ_RR));
+      Serial.println(analogRead(READ_RR));
+}
 void moveUsingInput(){
   int control = (recievedChar - '0');
 
@@ -70,14 +111,25 @@ void moveUsingInput(){
   while(newData == true){
     
     if(control == 1){
-      FORWARD(spd, dly);
-      Serial.println("moving forward");
+      dist_front = getDist(trig_front, echo_front);
+      Serial.print("Distance");
+      Serial.println(dist_front);
+      if(sonar_front.ping_cm() > 10){
+        FORWARD(spd, dly);
+        Serial.println("moving forward");
+      }
+      else{
+        Serial.println("too close");
+      }
+      //readValues();
       //delay(dly*3);
       //PAUSE(spd, dlyP);
+      
     }
     else if (control == 2){
       REVERSE(spd, dly);
       Serial.println("moving reverse");
+      //readValues();
       //delay(dly*3);
       //PAUSE(spd, dlyP);
     }
@@ -85,12 +137,14 @@ void moveUsingInput(){
       
       LEFT(spdT, dlyT);
       Serial.println("moving left");
+      //readValues();
       //delay(dly*3);
       //PAUSE(spd, dlyP);
     }
     else if (control == 4){
       RIGHT(spdT, dlyT);
       Serial.println("moving right");
+      //readValues();
       //delay(dly*);
       //PAUSE(spd, dlyP);
     }
@@ -113,9 +167,11 @@ void moveUsingInput(){
     else{
       Serial.println("unknown input");
       PAUSE(spd,dlyP);
+      Serial.println(READ_RR);
+      Serial.println(READ_RF);
     }
     newData = false;
-    //PAUSE(spd,dlyP);
+    //readValues();
   }
 
     
