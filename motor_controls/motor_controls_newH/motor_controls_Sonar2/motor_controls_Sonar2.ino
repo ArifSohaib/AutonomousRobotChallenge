@@ -39,7 +39,7 @@ unsigned int pingSpeed_F = 50;
 unsigned int pingSpeed_B = 75;
 unsigned long pingTimer;
 unsigned long pingTimer_B;
-
+bool debug = false;
 void setup()
 { 
   
@@ -67,8 +67,10 @@ void loop()
   if(dist_front < thresh){
       
     PAUSE(spd, dlyP);
-    Serial.print("distance:  "); Serial.print(dist_front);
-    Serial.println(" stopping");
+    if(debug==true){
+      Serial.print("distance:  "); Serial.print(dist_front);
+      Serial.println(" stopping");
+    }
     recvInfo();
     moveUsingInput();
   }
@@ -109,47 +111,66 @@ void moveUsingInput(){
   int control = (recievedChar - '0');
 
   if(newData == true){  
-
-    Serial.print("control value   is:"); Serial.print(control);
+    if(debug==true){
+      Serial.print("control value   is:"); Serial.print(control);
+    }
 
     if(control == 1){
       FORWARD(spd, dly);
-      Serial.println("moving forward");
+      if(debug == true){
+        Serial.println("moving forward");
+      }
     }
     else if (control == 2){
       REVERSE(spd, dly);
-      Serial.println("moving forward");
+      if(debug==true){
+        Serial.println("moving reverse");
+      }
     }
     else if (control == 3){
       
       LEFT(spdT, dlyT);
-      Serial.println("moving left");
+      if(debug==true){
+        Serial.println("moving left");
+      }
 
     }
     else if (control == 4){
       RIGHT(spdT, dlyT);
-      Serial.println("moving right");
-
+      if(debug==true){
+        Serial.println("moving right");
+      }
     }
     else if(control == 5){
       PAUSE(spd, dlyP);
-      Serial.println("paused");
+      if(debug==true){
+        Serial.println("paused");
+      }
     }
     else if(control == 6){
       spd = spd + 20;
       spdT = spdT + 20;
-      Serial.print("increasing speed to "); Serial.print(spd); Serial.println(" pwm");
+      if(debug==true){
+        Serial.print("increasing speed to "); Serial.print(spd); Serial.println(" pwm");
+      }
     }
     else if(control == 7){
       spd = spd - 20;
       spdT = spdT - 20;
-      Serial.print("decreasing speed to "); Serial.print(spd); Serial.println(" pwm");
+      if(debug==true){
+        Serial.print("decreasing speed to "); Serial.print(spd); Serial.println(" pwm");
+      }
     }
     else{
-      Serial.println("unknown input");
-      PAUSE(spd,dlyP);
+      if(debug==true){
+        Serial.println("unknown input");
+        PAUSE(spd,dlyP);
+      }
+      
     }
-    Serial.println("");
+    if(debug){
+      Serial.println("");
+    }
     
   }
   newData = false;
