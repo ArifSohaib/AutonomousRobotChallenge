@@ -1,14 +1,3 @@
-//#include <Wire.h> 
-//#include <Servo.h>
-//#include <LiquidCrystal_I2C.h>
-//LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7);  // Set the LCD I2C address
-// Analog Pin A4 SDA - Data UltraSonicDistanceSensor
-// Analog Pin A5 SCL - Clock (Edge Pin)
-/*
- * Filename: Bluetooth.ino
- * Source: https://www.youtube.com/watch?v=fJvtMszk2G4
- * Date: March 2, 2017
-*/
 #include <NewPing.h>
 #define trig_front 13
 #define echo_front 12
@@ -17,15 +6,7 @@
 char c;
 char recievedChar;
 boolean newData = false;
-//SoftwareSerial mySerial(10,11);
-// Reading 4x4 Keypad with ONE Arduino Pin
-// by Hari Wiguna, 2016
-// Source: https://www.youtube.com/watch?v=G14tREsVqz0&t=325s
-// Check schematics and resistors placement.
 
-//int Xdir = 0;
-//int Ydir = 0;
-//(ADC pin 14);
 
 int LEFT_FORWARD = 6;
 int LEFT_REVERSE = 5;
@@ -50,9 +31,15 @@ int distance;
 float dist_front;
 float dist_back;
 
-// Information on L298N and PWM control
-// PWM ranges from 0 to 255. Pins D6 & D9 are used here.  Use analogWrite(6,255) for PWM.
-//http://tronixstuff.com/2014/11/25/tutorial-l298n-dual-motor-controller-modules-and-arduino/
+unsigned long timestamp1;
+unsigned long timestamp2;
+bool movingForward = false;
+bool movingReverse = false;
+unsigned int pingSpeed_F = 50;
+unsigned int pingSpeed_B = 75;
+unsigned long pingTimer;
+unsigned long pingTimer_B;
+
 void setup()
 { 
   
@@ -66,29 +53,21 @@ void setup()
   pinMode(READ_LR, INPUT);
   Serial.begin(9600);
   
-//  mySerial.begin(9600);
-  //Serial.println("Testing Bluetooth.  Sync with Android Bluetooth now.");
 }
 
-unsigned long timestamp1;
-unsigned long timestamp2;
-bool movingForward = false;
-bool movingReverse = false;
+
 void loop()
 { 
-  timestamp1=millis();
-  dist_front = sonar_front.ping_cm();
-  dist_back = sonar_back.ping_cm();
-  timestamp2=millis();
+  if(millis() >= pingTimer){
+    pingTimer += pingSpeed_F;
+    sonar_front.ping_timer(echoCheck);
+  }
 
-  Serial.print("dist_front "); Serial.print(dist_front); Serial.print(", dist_back: "); Serial.print(dist_back);
-  Serial.print(" Total time: "); Serial.print( (timestamp2-timestamp1) );
-  Serial.println("");
   
-  if((((dist_front != 0) ||  (dist_front < thresh)) & movingForward) || (((dist_back != 0) ||  (dist_back < thresh)) & movingReverse)){
+  if(dist_front < thresh){
       
     PAUSE(spd, dlyP);
-    Serial.print("distance:  "); Serial.print(dist_front); Serial.print(" "); Serial.print(dist_back);
+    Serial.print("distance:  "); Serial.print(dist_front);
     Serial.println(" stopping");
     recvInfo();
     moveUsingInput();
@@ -99,10 +78,25 @@ void loop()
       moveUsingInput();
   }
 
-  
-  //  PAUSE(spd,dlyP);
 }
 
+void echoCheckBack(){
+  if(sonar_back.check_timer()){
+    dist_back = (sonar_back.ping_result / US_ROUNDTRIP_CM);
+  }
+}
+void echoCheck() { // Timer2 interrupt calls this function every 24uS where you can check the ping status.
+  // Don't do anything here!
+  if (sonar_front.check_timer()) { // This is how you check to see if the ping was received.
+    // Here's where you can add code.
+    //Serial.print("front distance: ");
+    dist_front = (sonar_front.ping_result / US_ROUNDTRIP_CM);
+    //dist_back = (sonar_back.ping_result / US_ROUNDTRIP_CM);
+    //Serial.print(dist_front); // Ping returned, uS result in ping_result, convert to cm with US_ROUNDTRIP_CM.
+    //Serial.println("cm");
+  }
+  // Don't do anything here!
+}
 
 void readValues(){
         
@@ -116,63 +110,26 @@ void moveUsingInput(){
 
   if(newData == true){  
 
-    Serial.print("control value   is:");
-    Serial.print(control);
-//    Serial.print(", ");
-//    Serial.print("control value 2 is:");
-//    Serial.println(control2);
-//    
-    if(control == 1){
-      
-      //dist_front = sonar_front.ping_cm();
-      Serial.print("Distance ");
-      Serial.println(dist_front);
-      if((dist_front == 0) || (dist_front > thresh)){
-        FORWARD(spd, dly);
-        Serial.println("moving forward");
-        movingForward = true;
-        movingReverse = false;
-      }
-      else{
-        Serial.print("too close ");
-        Serial.println(sonar_front.ping_cm());
-        PAUSE(spd, dlyP);
-      }
+    Serial.print("control value   is:"); Serial.print(control);
 
+    if(control == 1){
+      FORWARD(spd, dly);
+      Serial.println("moving forward");
     }
     else if (control == 2){
-      //dist_back = sonar_back.ping_cm();
-      Serial.print("Distance ");
-      Serial.println(dist_back);
-      if((dist_back == 0) || (dist_back > thresh)){
-        REVERSE(spd, dly);
-        Serial.println("moving reverse");
-        movingForward = false;
-        movingReverse = true;
-      }
-      else{
-        Serial.print("too close ");
-        Serial.println(dist_back);
-        PAUSE(spd, dlyP);
-      }
-      //readValues();
-      //delay(dly*3);
-      //PAUSE(spd, dlyP);
+      REVERSE(spd, dly);
+      Serial.println("moving forward");
     }
     else if (control == 3){
       
       LEFT(spdT, dlyT);
       Serial.println("moving left");
-      //readValues();
-      //delay(dly*3);
-      //PAUSE(spd, dlyP);
+
     }
     else if (control == 4){
       RIGHT(spdT, dlyT);
       Serial.println("moving right");
-      //readValues();
-      //delay(dly*);
-      //PAUSE(spd, dlyP);
+
     }
     else if(control == 5){
       PAUSE(spd, dlyP);
@@ -181,20 +138,16 @@ void moveUsingInput(){
     else if(control == 6){
       spd = spd + 20;
       spdT = spdT + 20;
-      Serial.println("increasing speed");
-      Serial.println(spd);
+      Serial.print("increasing speed to "); Serial.print(spd); Serial.println(" pwm");
     }
     else if(control == 7){
       spd = spd - 20;
       spdT = spdT - 20;
-      Serial.println("decreasing speed");
-      Serial.println(spd);
+      Serial.print("decreasing speed to "); Serial.print(spd); Serial.println(" pwm");
     }
     else{
       Serial.println("unknown input");
       PAUSE(spd,dlyP);
-      //Serial.println(READ_RR);
-      //Serial.println(READ_RF);
     }
     Serial.println("");
     
@@ -204,27 +157,34 @@ void moveUsingInput(){
 }
 
 void FORWARD(int spd, int dly)
-{ 
-
-  for(int i=0; i<=spd;i+=20){
+{           
+  movingForward = true;
+  movingReverse = false;
+  for(int i=0;i<=spd;i+=20){
+    
     analogWrite(LEFT_FORWARD,0);
     analogWrite(RIGHT_FORWARD, 0);
     analogWrite(LEFT_REVERSE,i);
     analogWrite(RIGHT_REVERSE,i);
     delay(dly);
-  }
+  } 
 }
+
+
 void REVERSE(int spd, int dly)
 {           
-
-  for(int i=0; i<=spd; i+=20){  
+  movingForward = false;
+  movingReverse = true;
+  for(int i=0;i<=spd;i+=20){
+    
     analogWrite(LEFT_FORWARD,i);
     analogWrite(RIGHT_FORWARD, i);
     analogWrite(LEFT_REVERSE,0);
     analogWrite(RIGHT_REVERSE,0);
     delay(dly);
-  }
+  } 
 }
+
 void LEFT(int spd, int dly)
 {           
   movingForward = false;
