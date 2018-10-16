@@ -189,7 +189,7 @@ void FORWARD(int spd, int dly)
     analogWrite(RIGHT_REVERSE,i);
     delay(dly);
   } 
-  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("RIGHT_FORWARD:");Serial.print(0);Serial.print("LEFT_REVERSE");Serial.print(spd);Serial.print("RIGHT_REVERSE");Serial.println(spd);
+  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("  RIGHT_FORWARD:");Serial.print(0);Serial.print("  LEFT_REVERSE");Serial.print(spd);Serial.print("  RIGHT_REVERSE");Serial.println(spd);
 }
 
 
@@ -205,7 +205,7 @@ void REVERSE(int spd, int dly)
     analogWrite(RIGHT_REVERSE,0);
     delay(dly);
   } 
-  Serial.print("LEFT_FORWARD:");Serial.print(spd);Serial.print("RIGHT_FORWARD:");Serial.print(spd);Serial.print("LEFT_REVERSE");Serial.print(0);Serial.print("RIGHT_REVERSE");Serial.println(0);
+  Serial.print("LEFT_FORWARD:");Serial.print(spd);Serial.print("  RIGHT_FORWARD:");Serial.print(spd);Serial.print("  LEFT_REVERSE");Serial.print(0);Serial.print("  RIGHT_REVERSE");Serial.println(0);
 }
 
 void LEFT(int spd, int dly)
@@ -220,7 +220,7 @@ void LEFT(int spd, int dly)
     analogWrite(RIGHT_REVERSE,i/2);
     delay(dly);
   } 
-  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("RIGHT_FORWARD:");Serial.print(0);Serial.print("LEFT_REVERSE");Serial.print(spd);Serial.print("RIGHT_REVERSE");Serial.println(spd/2);
+  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("  RIGHT_FORWARD:");Serial.print(0);Serial.print("  LEFT_REVERSE");Serial.print(spd);Serial.print("  RIGHT_REVERSE");Serial.println(spd/2);
 }
 void RIGHT(int spd, int dly)
 { 
@@ -234,7 +234,7 @@ void RIGHT(int spd, int dly)
     analogWrite(RIGHT_REVERSE,i);
     delay(dly);
   }
-  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("RIGHT_FORWARD:");Serial.print(0);Serial.print("LEFT_REVERSE");Serial.print(spd/2);Serial.print("RIGHT_REVERSE");Serial.println(spd);
+  Serial.print("LEFT_FORWARD:");Serial.print(0);Serial.print("  RIGHT_FORWARD:");Serial.print(0);Serial.print("  LEFT_REVERSE");Serial.print(spd/2);Serial.print("  RIGHT_REVERSE");Serial.println(spd);
 }
 
 void PAUSE(int spd, int dly)
