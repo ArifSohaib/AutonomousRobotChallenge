@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import datetime
 
-ser = serial.Serial("/dev/ttyUSB0", "9600")
+ser = serial.Serial("/dev/ttyACM0", "9600")
 cap = cv2.VideoCapture(0)
 piCam = False
 #check if picamera exists
@@ -30,7 +30,7 @@ screen.keypad(True)
 keyRec = open('key_strokes.txt','w+')
 
 train_data = []
-
+curr_time = time.time()
 try:
     while True:
         if piCam == True:
@@ -40,11 +40,15 @@ try:
                 rawCapture.truncate(0)
                 
                 char = screen.getch()
-                key = [0,0,0,0,1]
+                prev_time = curr_time
+                curr_time = time.time()
+                
+                key = [0,0,0,0,1,0,0]
                 if char == ord('x'):
-                    np.save("train_data_{}.npy".format(str(datetime.datetime.now()), train_data)
+                    key = [0,0,0,0,1,0,0]
                     ser.write(b'5')
                     keyRec.close()
+                    np.save("train_data.npy", train_data)
                     curses.nocbreak(); screen.keypad(0); curses.echo()
                     curses.endwin()
                     break
@@ -76,7 +80,7 @@ try:
                     ser.write(b'7')
                     key = [0,0,0,0,0,0,1]
 
-                val_dict = {"input":key, "image":image_np}
+                val_dict = {"input":key, "image":image_np, "time_diff":curr_time-prev_time}
                 train_data.append(val_dict)
                 keyRec.write(str(key)+"\n")
                 
@@ -97,22 +101,31 @@ try:
                 break
             elif char == ord('w'):
                 ser.write(b'1')
-                key = [1,0,0,0,0]
-                
+                key = [1,0,0,0,0,0,0]
+
             elif char == ord('s'):
                 ser.write(b'2')
-                key = [0,1,0,0,0]
-                
+                key = [0,1,0,0,0,0,0]
+                    
             elif char == ord('a'):
                 ser.write(b'3')
-                key = [0,0,1,0,0]
-                
+                key = [0,0,1,0,0,0,0]
+                    
             elif char == ord('d'):
                 ser.write(b'4')
-                key = [0,0,0,1,0]
+                key = [0,0,0,1,0,0,0]
+
             elif char == ord(' '):
                 ser.write(b'5')
-                key = [0,0,0,0,1]
+                key = [0,0,0,0,1,0,0]
+
+            elif char == ord('q'):
+                ser.write(b'6')
+                key = [0,0,0,0,0,1,0]
+
+            elif char == ord('e'):
+                ser.write(b'7')
+                key = [0,0,0,0,0,0,1]
                 
             val_dict = {"input":key, "image":image_np}
             train_data.append(val_dict)
