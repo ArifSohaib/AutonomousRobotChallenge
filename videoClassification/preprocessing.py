@@ -14,3 +14,8 @@ def load_and_preprocess_image(path):
 def caption_image(image_path, data_root):
     image_rel = pathlib.Path(image_path).relative_to(data_root)
     return "Image " + image_rel.parts[-1]
+
+def parse(x):
+    result = tf.io.parse_tensor(x, out_type=tf.float32)
+    result = tf.reshape(result, [192, 192, 3])
+    return result
