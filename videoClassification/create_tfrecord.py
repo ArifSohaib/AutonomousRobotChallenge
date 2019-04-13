@@ -58,6 +58,11 @@ tfrec.write(ds)
 
 ds = tf.data.TFRecordDataset('../datasetSearch/images.tfrec')
 ds = ds.map(preprocessing.parse, num_parallel_calls=AUTOTUNE)
+
+#PROBLEM: the ordering could be a problem if directly loading the image data from images.tfrec directly
+#this is because the labels aren't directly associated with images and instead rely on the ordering of files
+#so I have to do the fit here until I can find a solution to this
+
 label_ds = tf.data.Dataset.from_tensor_slices(tf.cast(all_image_labels, tf.int64))
 image_label_ds = tf.data.Dataset.zip((ds, label_ds))
 
